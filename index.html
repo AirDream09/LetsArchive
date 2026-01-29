@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Lets Archive 0.1</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b0b0f;
+  --card:#1a1a2e;
+  --accent:#00ffcc;
+  --accent-dark:#008f70;
+  --text:#fff;
+  --muted:#777;
+  --header-bg:#111;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Orbitron',sans-serif;}
+body{background:var(--bg);color:var(--text);}
+.hidden{display:none !important;}
+header{display:flex;flex-direction:column;align-items:center;padding:20px;background:var(--header-bg);border-bottom:2px solid var(--accent);}
+header h1{font-size:36px;color:var(--accent);margin-bottom:8px;}
+header small{color:var(--muted);margin-bottom:12px;font-size:14px;}
+header p{color:var(--muted);font-size:12px;text-align:center;max-width:600px;}
+header input{padding:10px 14px;border-radius:20px;border:none;width:250px;background:#222;color:#fff;margin-top:10px;}
+
+.grid{display:grid;gap:20px;padding:20px;}
+.card{background:var(--card);border-radius:16px;padding:16px;cursor:pointer;transition:.3s;position:relative;display:flex;flex-direction:column;justify-content:space-between;}
+.card:hover{transform:scale(1.03);box-shadow:0 0 20px var(--accent);}
+.card h3{margin-bottom:8px;font-size:16px;}
+.card p{margin:0;font-size:12px;color:var(--muted);}
+.progress{height:8px;background:#222;border-radius:4px;overflow:hidden;margin-top:10px;}
+.progress-fill{height:100%;background:var(--accent);transition:.3s;}
+.back{margin:20px;color:var(--accent);cursor:pointer;font-weight:bold;}
+h4{margin:16px 0 8px 0;color:var(--accent);text-transform:uppercase;letter-spacing:1px;}
+
+/* EPISODEN-OVERVIEW */
+.season-card{margin-bottom:20px;}
+.episode-card{background:#222;padding:8px 12px;margin:4px 0;border-radius:10px;cursor:pointer;transition:.2s;}
+.episode-card:hover{background:var(--accent-dark);}
+.episode-list{display:flex;flex-direction:column;padding-left:10px;}
+
+/* PLAYER-OVERLAY */
+#playerOverlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.95);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:999;
+  display:none;
+}
+#playerOverlay iframe{width:80%;aspect-ratio:16/9;border-radius:16px;border:2px solid var(--accent);}
+#playerOverlay button{margin-top:10px;background:var(--accent);border:none;color:#000;padding:10px 14px;border-radius:12px;cursor:pointer;transition:.2s;}
+#playerOverlay button:hover{background:var(--accent-dark);}
+#playerOverlay .back{align-self:flex-start;margin-bottom:10px;}
+
+/* Zuletzt gesehen */
+#lastSeen{padding:0 20px 10px 20px;}
+#lastSeen h4{margin-bottom:8px;}
+.last-card{background:#222;padding:10px;margin:4px 0;border-radius:12px;cursor:pointer;transition:.2s;}
+.last-card:hover{background:var(--accent-dark);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Willkommen bei Lets Archive</h1>
+  <small>Version 0.1</small>
+  <p>Change Log: <br> - Staffeln & Episoden klarer Layout<br> - Player Overlay<br> - Fortschrittsbalken<br> - Fuzzy Search<br> - Letzte Folge automatisch & Autoplay<br> - Swipe Navigation</p>
+  <input type="text" id="searchInput" placeholder="Suche Serien/Episoden...">
+</header>
+
+<div id="lastSeen">
+  <h4>Zuletzt gesehen</h4>
+  <div id="lastSeenList"></div>
+</div>
+
+<div id="series" class="grid"></div>
+
+<div id="episodes" class="hidden">
+  <div class="back" onclick="backToSeries()">← Zurück zu Serien</div>
+  <div id="seasonContainer"></div>
+</div>
+
+<div id="playerOverlay">
+  <div class="back" onclick="closePlayer()">← Zurück</div>
+  <iframe id="videoPlayer" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  <button onclick="nextEpisode()">Nächste Folge ▶</button>
+</div>
+
+<script>
+// ====== DATEN ======
+const data = {
+  serie1: { name: "Hidden Side", staffeln: { 1: [
+    { title: "Folge 1 - 9", id: "1RlnkPFXO_Ln7v4uR5QUb0Wy3FyQAtIOM" },
+    { title: "Folge 10 - 20", id: "11cwu8AqOlgnnjAL7uZ0UKcQNvu4xTvy9" },
+    { title: "Face the Fear", id: "1imw8nGMKsj0WpphpmOmjGCfWUov-42eB" },
+    { title: "Night of the Habringer", id: "1X9eTHaUbuFQJmOziLB6lKKI40IK4GyxT" }
+  ]}},
+
+  serie2: { name: "Ninjago", staffeln: {
+    1: [{ title: "Pilot", id: "1t7C34GGPcP65P3ThGmXj4pklUc_5ondX" },
+    
+      { title: "Folge 01 - Der Aufstieg der Schlangen", id: "1e2nN0EbtrTsIBlzP7vygK30tZ6e3WpXX" },
+      { title: "Folge 02 - Der Pfad des Falken", id: "1wP05cdfBQ41uQ6IcOjv0Us_RfININ7gZ" },
+      { title: "Folge 03 - Familienbande", id: "17il6fjhQokb0Uog9FMM5H9knNnv7uCZ3" },
+      { title: "Folge 04 - Traue niemals einer Schlange", id: "10XLoLRBQEOrin1xBii3ijYt9TMD2BwNo" },
+      { title: "Folge 05 - Die Vereinigung der Schlangen", id: "1btuDiUNcpb173vY4ibqknmHnEH6Tfm1I" },
+      { title: "Folge 06 - Die verlorene Stadt", id: "1zTp67sOdVMc6m-EGChbxEqNmVWFWyTgz" },
+      { title: "Folge 07 - Der Nindroid", id: "1dztrrjyVewOe0A1NTUDWsn74xutgkHCG" },
+      { title: "Folge 08 - Die erste Reißzahnklinge", id: "1r6gPDSlf_puT3U29n2szD6EqeYb-d6nL" },
+      { title: "Folge 09 - Der Talentwettbewerb", id: "1gWIaiLETNJnB5PgnGmbeALw-nO7mwqyl" },
+      { title: "Folge 10 - Der grüne Ninja", id: "1Yw-66yhj3NaZChNmsEYqmeYiR53ZvotF" },
+      { title: "Folge 11 - Die vierte Reißzahnklinge", id: "1WbWnIcxNnHM-Jlm59eb_13EjYUDM2iUD" },
+      { title: "Folge 12 - Das böse Erwachen", id: "1UDnAEw84bl6_OtkB2zKz6fWShPXSFSXK" },
+      { title: "Folge 13 - Rettung in letzter Sekunde", id: "1sICwlW9_0Qkx7LRXBSOeOVeAhX_f4lIH" }
+    ],
+    2: [
+      { title: "Folge 01 - Finsternis zieht herauf", id: "1ZdxxYAiBy5HoJe93l5vjZMMrFUdGagbn" },
+      { title: "Folge 02 - Piraten gegen Ninja", id: "1_yz41pRQ2ZmkAtQ5PMXhrDuqwLF7sGV6" },
+      { title: "Folge 03 - Die falschen Ninja", id: "1KO4FMNjCjlXtVOzA7poEUGr4ZQbJnsov" },
+      { title: "Folge 04 - Das Ninjaball-Rennen", id: "1jFwNNwFalph9Qmj4qpokLkPmemN3xySa" },
+      { title: "Folge 05 - Wieder jung!", id: "1io2R-CZ-ixQJxkEsSfcQh80k8rYx6vDS" },
+      { title: "Folge 06 - Die Zeitreise", id: "19FJ3vVmyeFjJSLm1HLiCWtc5bdmUwcO3" },
+      { title: "Folge 07 - Lloyds Mutter Misako", id: "1ZCb8nE9BKMBhwIRizM6tmO6j8rftlelT" },
+      { title: "Folge 08 - Die Steinsamurai", id: "1An3IsKjVVc5hnLz5J0HGUc_LfQMuvrMf" },
+      { title: "Folge 09 - Die Reise zum Tempel des Lichts", id: "1Mh6Orm_6x89pzC8uDZ40GFbNJBS8zOqd" },
+      { title: "Folge 10 - Der Tempel des Lichts", id: "1R-Zlr1M317bwpnHn_6QqqRoNoNTQWqxM" },
+      { title: "Folge 11 - Die dunkle Uhr", id: "1ad-q_ceBFHtnM4BA5kENN7WGqT_UT9pc" },
+      { title: "Folge 12 - Garmadons neue Maschine", id: "11A4UXSg1nkaMkml5Bf2IR8dHEOPmF2y6" },
+      { title: "Folge 13 - Der Ultimative Spinjitzu-Meister", id: "1U-qbSpmjIaKjD9fiBfx_V-mNFVcz_kut" }
+    ],
+3: [
+{title:"Folge 01 - Das neue Ninjago",id:"1fEICZXXU3fdYrOAsEXdHe9H9n2Vh88_9"},
+{title:"Folge 02 - Die Kunst, nicht zu kämpfen",id:"1yV_S1S-kvGybyJKpKXthU9ruOuRymwum"},
+{title:"Folge 03 - Das innere Gleichgewicht",id:"1fyNPHGCHU11j9iM71wYT23WCKzO_W3jC"},
+{title:"Folge 04 - Die Legende des Goldenen Meisters",id:"1776hEUcW7A6aIhADtWi1_J1FqamqEhnW"},
+{title:"Folge 05 - Die Computerwelt",id:"13LVi3Pw1Syo26Lzac62pOLXQkdb7vn2t"},
+{title:"Folge 06 - Projekt Arcturus",id:"1q4BHTmCYxj9Dx9r-448DCdNWrtmVRfk1"},
+{title:"Folge 07 - Die Ninja im Weltall",id:"1j4k8pooIlER8Rqr2DYKut_h2KiMudOSM"},
+{title:"Folge 08 - Der Goldene Meister",id:"109slMfHhHg5iE5PhcgspgN0PqcPArx53"}]} 
+},
+
+  serie3: { name: "Monkie Kid", staffeln: { 
+1: [
+{ title: "Episode 01 – A Hero is Born + Bad Weather", id: "1lLHhcnIGbMsMHuZbwVyaK5uZ9H0ADdjx" },
+{ title: "Episode 02 – Duplicatnation", id: "1Pn0ROqQaabH4eckhygVEavpX9SdO5uK" },
+{ title: "Episode 03 – Coming Home", id: "1oO8CdGUUdzqzflOvvPhwxeNP_DFjUx98" },
+{ title: "Episode 04 – Noodles or Death", id: "1Xy_QoT0f7MH2QJnMIqxPlDEqG89iZhBS" },
+{ title: "Episode 05 – Calabash", id: "1pTjIccyUPfiEfPdoFBFZ471mqO4DAULy" },
+{ title: "Episode 06 – The Great Wall Race", id: "1gQpYeA7Y9SwSMUHJ3JMYgJA62xZ8YFbG" },
+{ title: "Episode 07 – Impossible Delivery", id: "1MTHO4SX9xeXgLgrphy0KkDthkXO7X7MZ" },
+{ title: "Episode 08 – Skeleton Key", id: "19ZGo71sl9-uoirUDcCIsgoJvGG70o0rh" },
+{ title: "Episode 09 – Macaque", id: "1_KkJrGAU9giDgX2kADtJetjvuc6N2Z3G" },
+{ title: "Episode 10 – The End is Here!", id: "1zK4a2BqRtnUbydlClKu33WWjown0a2ZB" }
+] } }
+};
+
+
+
+let currentSeries=null;
+let currentSeason=1;
+let currentEpisodeIndex=0;
+let progress=JSON.parse(localStorage.getItem('progress')||'{}');
+let lastSeenOrder=JSON.parse(localStorage.getItem('lastSeen')||'[]');
+
+function saveProgress(){localStorage.setItem('progress',JSON.stringify(progress));}
+function saveLastSeen(){localStorage.setItem('lastSeen',JSON.stringify(lastSeenOrder));}
+
+// ====== ZU LETZT GESEHEN ======
+function renderLastSeen(){
+  const container=document.getElementById("lastSeenList");
+  container.innerHTML="";
+  lastSeenOrder.forEach(ep=>{
+    const div=document.createElement("div");
+    div.className="last-card";
+    div.innerText=`${ep.serie} - ${ep.title}`;
+    div.onclick=()=>{
+      currentSeries=ep.serieKey;
+      currentSeason=ep.season;
+      currentEpisodeIndex=ep.index;
+      playEpisode(ep.id);
+    };
+    container.appendChild(div);
+  });
+}
+
+// ====== SERIEN RENDER ======
+function renderSeries(filter=null){
+  const seriesDiv=document.getElementById("series");
+  seriesDiv.innerHTML="";
+  Object.keys(data).forEach(key=>{
+    const serie=data[key];
+    if(filter && !filter.includes(key)) return;
+    const total=Object.values(serie.staffeln).flat().length;
+    const seen=Object.values(serie.staffeln).flat().filter(ep=>progress[ep.id]).length;
+    const div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`<h3>${serie.name}</h3>
+      <div class="progress"><div class="progress-fill" style="width:${(seen/total)*100}%"></div></div>
+      <p>Staffeln: ${Object.keys(serie.staffeln).length}</p>`;
+    div.onclick=()=>openSeries(key);
+    seriesDiv.appendChild(div);
+  });
+}
+
+// ====== STAFFEL + FOLGEN ======
+function openSeries(key){
+  currentSeries=key;
+  document.getElementById("series").classList.add("hidden");
+  document.getElementById("episodes").classList.remove("hidden");
+  renderEpisodes();
+}
+
+function renderEpisodes(){
+  const container=document.getElementById("seasonContainer");
+  container.innerHTML="";
+  const seasons=data[currentSeries].staffeln;
+
+  Object.keys(seasons).forEach(season=>{
+    const seasonCard=document.createElement("div");
+    seasonCard.className="season-card card";
+    seasonCard.innerHTML=`<h3>Staffel ${season}</h3>`;
+    container.appendChild(seasonCard);
+
+    const epsList=document.createElement("div");
+    epsList.className="episode-list";
+
+    seasons[season].forEach((ep,i)=>{
+      const epDiv=document.createElement("div");
+      epDiv.className="episode-card";
+      epDiv.innerText=ep.title;
+      epDiv.onclick=()=>{
+        currentSeason=parseInt(season);
+        currentEpisodeIndex=i;
+        playEpisode(ep.id);
+      };
+      epsList.appendChild(epDiv);
+    });
+
+    container.appendChild(epsList);
+  });
+  // Automatisch letzte Folge auswählen
+  autoSelectLastEpisode();
+}
+
+// ====== PLAYER ======
+function playEpisode(id){
+  document.getElementById("playerOverlay").style.display="flex";
+  document.getElementById("videoPlayer").src=`https://drive.google.com/file/d/${id}/preview`;
+  progress[id]=true;
+  saveProgress();
+
+  // Update Last Seen
+  const epData={serie:data[currentSeries].name,title:Object.values(data[currentSeries].staffeln)[currentSeason-1][currentEpisodeIndex].title,id:id,serieKey:currentSeries,season:currentSeason,index:currentEpisodeIndex};
+  lastSeenOrder=lastSeenOrder.filter(e=>e.id!==id);
+  lastSeenOrder.unshift(epData);
+  if(lastSeenOrder.length>5) lastSeenOrder.pop();
+  saveLastSeen();
+  renderLastSeen();
+}
+
+// Automatische Auswahl der letzten Folge
+function autoSelectLastEpisode(){
+  const last=lastSeenOrder.find(e=>e.serieKey===currentSeries);
+  if(last){
+    currentSeason=last.season;
+    currentEpisodeIndex=last.index;
+  } else {
+    currentSeason=1;
+    currentEpisodeIndex=0;
+  }
+}
+
+// Nächste Folge Autoplay
+function nextEpisode(){
+  const eps=Object.values(data[currentSeries].staffeln)[currentSeason-1];
+  currentEpisodeIndex++;
+  if(currentEpisodeIndex>=eps.length){
+    // Gehe zur nächsten Staffel, falls möglich
+    const seasons=Object.keys(data[currentSeries].staffeln);
+    const nextSeasonIndex=seasons.indexOf(String(currentSeason))+1;
+    if(nextSeasonIndex<seasons.length){
+      currentSeason=parseInt(seasons[nextSeasonIndex]);
+      currentEpisodeIndex=0;
+    } else {
+      alert("Keine weiteren Folgen!");
+      return;
+    }
+  }
+  playEpisode(Object.values(data[currentSeries].staffeln)[currentSeason-1][currentEpisodeIndex].id);
+}
+
+function closePlayer(){document.getElementById("playerOverlay").style.display="none";}
+function backToSeries(){
+  document.getElementById("episodes").classList.add("hidden");
+  document.getElementById("series").classList.remove("hidden");
+  renderSeries();
+}
+
+// ====== FUZZY SEARCH ======
+function levenshtein(a,b){
+  const dp=Array(a.length+1).fill(null).map(()=>Array(b.length+1).fill(0));
+  for(let i=0;i<=a.length;i++)dp[i][0]=i;
+  for(let j=0;j<=b.length;j++)dp[0][j]=j;
+  for(let i=1;i<=a.length;i++){
+    for(let j=1;j<=b.length;j++){
+      if(a[i-1]===b[j-1]) dp[i][j]=dp[i-1][j-1];
+      else dp[i][j]=1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+    }
+  }
+  return dp[a.length][b.length];
+}
+
+function fuzzySearch(query){
+  query=query.toLowerCase();
+  const results=[];
+  Object.keys(data).forEach(key=>{
+    const serie=data[key];
+    let found=false;
+    if(levenshtein(serie.name.toLowerCase(),query)<=2) found=true;
+    if(!found) Object.values(serie.staffeln).flat().some(ep=>{if(levenshtein(ep.title.toLowerCase(),query)<=2){found=true;return true;}});
+    if(found) results.push(key);
+  });
+  return results;
+}
+
+document.getElementById("searchInput").addEventListener("input",(e)=>{
+  const val=e.target.value;
+  if(val==="") renderSeries();
+  else renderSeries(fuzzySearch(val));
+});
+
+// ====== SWIPE NAVIGATION ======
+let touchStartX=0,touchEndX=0;
+document.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;});
+document.addEventListener('touchend',e=>{
+  touchEndX=e.changedTouches[0].screenX;
+  if(touchEndX<touchStartX-50) nextEpisode();
+});
+
+renderSeries();
+renderLastSeen();
+</script>
+</body>
+</html>
+
+
+
+
+
