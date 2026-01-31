@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Lets Archive 0.1</title>
+<title>Lets Archive 0.2.1</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -72,8 +72,8 @@ h4{margin:16px 0 8px 0;color:var(--accent);text-transform:uppercase;letter-spaci
 
 <header>
   <h1>Willkommen bei Lets Archive</h1>
-  <small>Version 0.1</small>
-  <p>Change Log: <br> - Staffeln & Episoden klarer Layout<br> - Player Overlay<br> - Fortschrittsbalken<br> - Fuzzy Search<br> - Letzte Folge automatisch & Autoplay<br> - Swipe Navigation</p>
+  <small>Version 0.2.1</small>
+  <p>Change Log: <br> - Staffeln & Episoden klarer Layout<br> - Player Overlay<br> - Fortschrittsbalken<br> - Ninjago<br> - nächste Folge<br> - Swipe Navigation</p>
   <input type="text" id="searchInput" placeholder="Suche Serien/Episoden...">
 </header>
 
@@ -96,16 +96,20 @@ h4{margin:16px 0 8px 0;color:var(--accent);text-transform:uppercase;letter-spaci
 </div>
 
 <script>
-// ====== DATEN ======
 const data = {
-  serie1: { name: "Hidden Side", staffeln: { 1: [
-    { title: "Folge 1 - 9", id: "1RlnkPFXO_Ln7v4uR5QUb0Wy3FyQAtIOM" },
-    { title: "Folge 10 - 20", id: "11cwu8AqOlgnnjAL7uZ0UKcQNvu4xTvy9" },
-    { title: "Face the Fear", id: "1imw8nGMKsj0WpphpmOmjGCfWUov-42eB" },
-    { title: "Night of the Habringer", id: "1X9eTHaUbuFQJmOziLB6lKKI40IK4GyxT" }
-  ]}},
+  serie1: {
+    name: "Hidden Side",
+    staffeln: {
+      1: [
+        { title: "Folge 1 - 9", id: "1RlnkPFXO_Ln7v4uR5QUb0Wy3FyQAtIOM" },
+        { title: "Folge 10 - 20", id: "11cwu8AqOlgnnjAL7uZ0UKcQNvu4xTvy9" },
+        { title: "Face the Fear", id: "1imw8nGMKsj0WpphpmOmjGCfWUov-42eB" },
+        { title: "Night of the Habringer", id: "1X9eTHaUbuFQJmOziLB6lKKI40IK4GyxT" }
+      ]
+    }
+  },
 
-  serie2: { name: "Ninjago", staffeln: {
+ serie2: { name: "Ninjago", staffeln: {
     1: [{ title: "Pilot", id: "1t7C34GGPcP65P3ThGmXj4pklUc_5ondX" },
     
       { title: "Folge 01 - Der Aufstieg der Schlangen", id: "1e2nN0EbtrTsIBlzP7vygK30tZ6e3WpXX" },
@@ -145,23 +149,209 @@ const data = {
 {title:"Folge 05 - Die Computerwelt",id:"13LVi3Pw1Syo26Lzac62pOLXQkdb7vn2t"},
 {title:"Folge 06 - Projekt Arcturus",id:"1q4BHTmCYxj9Dx9r-448DCdNWrtmVRfk1"},
 {title:"Folge 07 - Die Ninja im Weltall",id:"1j4k8pooIlER8Rqr2DYKut_h2KiMudOSM"},
-{title:"Folge 08 - Der Goldene Meister",id:"109slMfHhHg5iE5PhcgspgN0PqcPArx53"}]} 
+{title:"Folge 08 - Der Goldene Meister",id:"109slMfHhHg5iE5PhcgspgN0PqcPArx53"}],
+
+4: [
+{title:"Folge 01 - Die Einladung",id:"17tsn1xHA2iRkCyyqI3Pvp8GVDyKnxEZa"},
+{title:"Folge 02 - Elementare Schwierigkeiten",id:"1GmfxSl2Z5a-sXCPkZBbb9yOMhM1hcC6J"},
+{title:"Folge 03 - Kenne deine Feinde",id:"1WoxFkls8mygcpqlkufi6nGEugWtFkXNp"},
+{title:"Folge 04 - Ninja auf Rollen",id:"1CnZMKsZpHU3xxyyDv0MHRh2E5_qFKJyK"},
+{title:"Folge 05 - Der Spion",id:"1lnTldpJEioLaLMV93wA2LX4cbDyy-jdZ"},
+{title:"Folge 06 - Die Geschichte der Anacondrai",id:"1FSEELPAzSIKjcCIIt2s_hNKYNd29ZyBT"},
+{title:"Folge 07 - Das letzte Element",id:"1qIQYeW05-CSuXYYzn2yhzPIHkhFi7s-w"},
+{title:"Folge 08 - Der Tag des Drachen",id:"17TF77SNp7QvDLYQdZeaB-24Ike15E4r_"},
+{title:"Folge 09 - Hilfe von Pythor",id:"1akPC_Qz_hf239xf6U5D5-8zNVEr-47ni"},
+{title:"Folge 10 - Der Pfad der Ältesten",id:"1AsqpG4ukZl_3M5NVZ5MCe1zFmi4qdmlT"}
+],
+
+5: [
+{title:"Folge 01 - Stürmischer Wind",id:"1ofC0ZwYl1iLULZRcgcKCytY2mEFW3yRX"},
+{title:"Folge 02 - Geistergeschichte",id:"1qUDO6d1ZzJVS2K9tNfBaKtr8eSyubCgE"},
+{title:"Folge 03 - Die Stadt über dem Wasser",id:"11_xDRnUXMgKe-M2eIi2jeAEohmSJGPXC"},
+{title:"Folge 04 - Sensei Yangs Prüfung",id:"1AF1Hnq6EIILKH88PtYQamrzCcHuSrmIg"},
+{title:"Folge 05 - Zyklon-Go",id:"1yXBtKWT7KSisNpK8ypQ--ZyN397xN3w1"},
+{title:"Folge 06 - Das Schwert der Prophezeiung",id:"1__3Je7n9qAHh0NR-hqrim8cel8jAf9Re"},
+{title:"Folge 07 - Falsches Spiel",id:"1VSNfbVi-9Ww185hPD1eRO137nREFqNpa"},
+{title:"Folge 08 - Die drei Prüfungen",id:"1VZI3XWmELsXkbcK61FIEzJhhfIeON-se"},
+{title:"Folge 09 - Der Weltenkristall",id:"1j_yJEPz8JNg_XeTQVTsmoz0iYfI92GIn"},
+{title:"Folge 10 - Die verfluchte Welt",id:"1rrglpFuZA-H4YCyxcSdkET18kcE1AfHK"}
+],
+
+6: [
+{title:"Folge 01 - Der Geist aus der Teekanne",id:"1xNAaW1oP-8WZddJBFdynjJK7Ruq1a8fA"},
+{title:"Folge 02 - Ronan auf Ninja-Suche",id:"1OUjBpISeI-8mQH3EcXCm4y9LgqbXRRjT"},
+{title:"Folge 03 - Das Vermächtnis des Dschinns",id:"1XNfSqRMk33iJsIDVDAVUW_O-nocbkFhk"},
+{title:"Folge 04 - Das Luftschiff des Unglücks",id:"1Jwh3d7sLu7NFCAievISlqm2-wU4BqXy7"},
+{title:"Folge 05 - Das Gift der Schwarzen Witwe",id:"14K87cmpiy0XvqeC9xbRsCyC-wU77CJBq"},
+{title:"Folge 06 - Nadakhans wahrer Plan",id:"1zsq1tQRw8-i0pJAVUyeZAIEg-k8Zk6QR"},
+{title:"Folge 07 - Wunschverschwendung",id:"1XWU_dlVDyMnQKeQ0PsQYXPjFeZJe47a5"},
+{title:"Folge 08 - Der alte Leuchtturm",id:"1SjZzdrvVUyySOH2Ls9pKSKaZbVmfPgM-"},
+{title:"Folge 09 - Das Ninja-Ersatzteam",id:"1VDOAWSLT13v4yUei6J9M5nKaN6HchRfJ"},
+{title:"Folge 10 - Der allmächtige Nadakhan",id:"1yMTLoRZpiCVpipQBOunGM5FcmFKVUhRv"},
+{title:"Tag der Erinnerungen",id:"1KcViHfXi1PFw5KNA0dMbOxIwrC3_DzoC"}
+],
+
+7: [
+{title:"Folge 01 - Meister der Zeit",id:"1iG6i4TAvqPJp_YaqPUiVwyw9TT7snUCs"},
+{title:"Folge 02 - Das große Schlüpfen",id:"1VvVZaDp3RSlwDetd0Vjh9fYGDF5mlOT0"},
+{title:"Folge 03 - Geschwister",id:"1PGwgWjbN95Cec1hVOjAhmELw9nJbvEfX"},
+{title:"Folge 04 - Metalldiebe",id:"1b5m3aTys_kmbhe3nYBJteJLy67j9NfZZ"},
+{title:"Folge 05 - Die zweite Zeitklinge",id:"1ZufJVlAlWs_PNV9yq136dIbMzi4Sdj2T"},
+{title:"Folge 06 - Im Siegesrausch",id:"131PjHsLonVxK4Q5mYAgDFDLmhpZhtIz-"},
+{title:"Folge 07 - Jede Menge Geheimnisse",id:"1JvNCJeei7jALYs_8C277cihEyZieKCt7"},
+{title:"Folge 08 - Das Familientreffen",id:"1T-iNH7hhKekR7LFW5rJ3YRZXN9aSoYiC"},
+{title:"Folge 09 - Zwei wie Feuer und Wasser",id:"1NdwLocz-9uMHtXIWo6YD1aAvRuJjX5ha"},
+{title:"Folge 10 - Reise in die Vergangenheit",id:"1rszBFkrdOIpvQ2ryfWA46IhTCcNAZ1sj"}
+],
+
+8: [
+{title:"Folge 01 - Die Maske der Täuschung",id:"11JQupRH9Ga6sipN-m-TV5Zl8g7sUnVbb"},
+{title:"Folge 02 - Prinzessin Harumi",id:"1JFTOhhVaBXcb4xQxNzasMwo2ZziURJ4S"},
+{title:"Folge 03 - Die Oni und die Drachen",id:"17xEVSfsPm72S43x-po_eNKFjINCcmhIS"},
+{title:"Folge 04 - Jake Schlangenschleim",id:"1aeFrC7aUE-oGV_e--tov5fH83Va4guJU"},
+{title:"Folge 05 - Die Ruhe vor dem Sturm",id:"1AAJYVc7MqoCWZnPo9LAPLugblgOIOnrR"},
+{title:"Folge 06 - Im Auge des Urwalds",id:"1UOM6-dOwrnHPwvVqhMBgNtF_qmq8J98U"},
+{title:"Folge 07 - Die dritte Maske",id:"1CHIoKbGSC78HOoKxB7x74gD4ISG-EdLP"},
+{title:"Folge 08 - Die Zeremonie",id:"1rPMvJHmkSLn-Kk9gdqoCizBvIrwySZmv"},
+{title:"Folge 09 - Die wahre Macht",id:"1lZyg9hOdII-6G51OtGh7iIG2yTqAOpYE"},
+{title:"Folge 10 - Kleines Ninjago, großer Ärger",id:"1AGc1fnEioU2KpMhdouR-SqMjjhxtvT-M"}
+],
+
+9: [
+{title:"Folge 01 - Gib niemals auf",id:"1005jOI3H_4wgn4SRJCY5n-SKYj745vyQ"},
+{title:"Folge 02 - Bei den Drachenjägern",id:"10XOy2_dLtgZBthBRTHCO_UCEz-vtP7bU"},
+{title:"Folge 03 - Drachen anlocken",id:"1lzVq_mC5Sle9MDOXur_rRBrLB3Db57eQ"},
+{title:"Folge 04 - Wie man einen Drachen baut",id:"11XuanIekogtVNNo12yEcQrTgcHGBhJFj"},
+{title:"Folge 05 - Vertrauen",id:"1OwZ5gPEa35jYdUJ2zSeF_4zp2G9bLkhS"},
+{title:"Folge 06 - Das Oni-Land",id:"1mlFBOOErlGtuN5ZJc36g2yuryeHGwCs8"},
+{title:"Folge 07 - Die doppelte Harumi",id:"1KpOb61CHfpLXfVqzGTJwZ_Xy810uFrLa"},
+{title:"Folge 08 - Die Lügen des Eisenbarons",id:"1hus_Oor3ukVSRd38NDetFtP8D6OH_tY9"},
+{title:"Folge 09 - Das Drachennest",id:"14wfT6km_dRjDdMtzQ0ogkjDI0zqR6pAW"},
+{title:"Folge 10 - Lloyds Kraft",id:"1lRNdIQtIY6QFvGvEygM6hSJ63f1028Z3"}
+],
+
+10: [
+{title:"Folge 01 - Eine dunkle Gefahr",id:"19QdWCmHUEtsiC0_eSeh4I9LyOQjadrbQ"},
+{title:"Folge 02 - Zusammenarbeit",id:"175e4K60kz93puo-HG9M71hOLJ0ZjNS0R"},
+{title:"Folge 03 - Der Sturz",id:"1MIdV7H64zIEjYLPZ9ucbaMFzYg8chbua"},
+{title:"Folge 04 - Der Tornado der Schöpfung",id:"17nLZ3tcl3RPx2GecRBR8LZDu-HIVVTYz"}
+
+],
+
+
+
+} 
 },
 
-  serie3: { name: "Monkie Kid", staffeln: { 
-1: [
-{ title: "Episode 01 – A Hero is Born + Bad Weather", id: "1lLHhcnIGbMsMHuZbwVyaK5uZ9H0ADdjx" },
-{ title: "Episode 02 – Duplicatnation", id: "1Pn0ROqQaabH4eckhygVEavpX9SdO5uK" },
-{ title: "Episode 03 – Coming Home", id: "1oO8CdGUUdzqzflOvvPhwxeNP_DFjUx98" },
-{ title: "Episode 04 – Noodles or Death", id: "1Xy_QoT0f7MH2QJnMIqxPlDEqG89iZhBS" },
-{ title: "Episode 05 – Calabash", id: "1pTjIccyUPfiEfPdoFBFZ471mqO4DAULy" },
-{ title: "Episode 06 – The Great Wall Race", id: "1gQpYeA7Y9SwSMUHJ3JMYgJA62xZ8YFbG" },
-{ title: "Episode 07 – Impossible Delivery", id: "1MTHO4SX9xeXgLgrphy0KkDthkXO7X7MZ" },
-{ title: "Episode 08 – Skeleton Key", id: "19ZGo71sl9-uoirUDcCIsgoJvGG70o0rh" },
-{ title: "Episode 09 – Macaque", id: "1_KkJrGAU9giDgX2kADtJetjvuc6N2Z3G" },
-{ title: "Episode 10 – The End is Here!", id: "1zK4a2BqRtnUbydlClKu33WWjown0a2ZB" }
-] } }
+
+  serie3: {
+    name: "Monkie Kid",
+    staffeln: {
+      1: [
+        { title: "Episode 01 – A Hero is Born + Bad Weather", id: "1lLHhcnIGbMsMHuZbwVyaK5uZ9H0ADdjx" },
+        { title: "Episode 02 – Duplicatnation", id: "1Pn0ROqQaabH4eckhygVEavpX9SdO5uK" },
+        { title: "Episode 03 – Coming Home", id: "1oO8CdGUUdzqzflOvvPhwxeNP_DFjUx98" },
+        { title: "Episode 04 – Noodles or Death", id: "1Xy_QoT0f7MH2QJnMIqxPlDEqG89iZhBS" },
+        { title: "Episode 05 – Calabash", id: "1pTjIccyUPfiEfPdoFBFZ471mqO4DAULy" },
+        { title: "Episode 06 – The Great Wall Race", id: "1gQpYeA7Y9SwSMUHJ3JMYgJA62xZ8YFbG" },
+        { title: "Episode 07 – Impossible Delivery", id: "1MTHO4SX9xeXgLgrphy0KkDthkXO7X7MZ" },
+        { title: "Episode 08 – Skeleton Key", id: "19ZGo71sl9-uoirUDcCIsgoJvGG70o0rh" },
+        { title: "Episode 09 – Macaque", id: "1_KkJrGAU9giDgX2kADtJetjvuc6N2Z3G" },
+        { title: "Episode 10 – The End is Here!", id: "1zK4a2BqRtnUbydlClKu33WWjown0a2ZB" }
+      ]
+    }
+  },
+
+ serie4: {
+    name: "Regular Show",
+    staffeln: {
+      1: [
+        { title: "Episode 01 – The Power", id: "1THedfIzzK334h4dWjbovN3JDuR_Wpqy-" },
+        { title: "Episode 02 – Just Set Up the Chairs", id: "1vwC8O0J1Tvtk4WUCfSrqEJIpBSCC7gzi" },
+        { title: "Episode 03 – Caffeinated Concert Tickets", id: "1rfm4VkX22jbG7bXS1npgi_3Hv__MJQ3x" },
+        { title: "Episode 04 – Death Punchies", id: "107R6Bcu1Q66yB0L1LzbdofVEwW1dVXH6" },
+        { title: "Episode 05 – Free Cake", id: "139qouI-YGgy2IqEAp28wQLVxOPafPNf2" },
+        { title: "Episode 06 – Meat Your Maker", id: "1VXB4h8LyZnfTvXJfzmbgA2cFEM03G_7P" },
+        { title: "Episode 07 – Grilled Cheese Deluxe", id: "1tmNTqg8fYjUYSQgwgezDC7J2N-zGtHKB" },
+        { title: "Episode 08 – The Unicorns Have Got to Go", id: "1GQyJc3sueMGG_CTtYgQ9ZiI1-rt8Brz-" },
+        { title: "Episode 09 – Prank Callers", id: "1BGghG446wYIVHHrA-Cy_fkdU1yxh1sW0" },
+        { title: "Episode 10 – Don", id: "1DM9fpYtAxUlzTCkwTo2GQiQQ2ugOk4p-" },
+        { title: "Episode 11 – Rigby's Body", id: "17XLQbfb_Ron4jICvDzf6svMWx0yapOQU" },
+        { title: "Episode 12 – Mordecai and the Rigbys", id: "1M1Is239Rbw7OPo1rBqKiX_mNezsWua7T" }
+      ]
+    }
+  },
+
+  serie5: {
+    name: "Chima",
+    staffeln: {
+      1: [
+        { title: "Folge 01 – Wie alles begann – Teil 1", id: "1uDN0IJpFPTxD4gg_GU1fDDdUFFJ-VNRN" },
+        { title: "Folge 02 – Wie alles begann – Teil 2", id: "1Sa62hKK4yHBA9uFov53gCHG0Vc3Ka0bu" },
+        { title: "Folge 03 – Hindernisse", id: "1G4M_HKlhsNIbB0VLKTzPP5tGYslVV-v8" },
+        { title: "Folge 04 – Der Ausflug", id: "17KOEQrlWN5PJ5fedfpm-gl4Bvgi-HD7n" },
+        { title: "Folge 05 – Markttag", id: "1TpzmXw_XO5ir_W5beMqtjaHoDaIFFnnq" },
+{ title: "Folge 06 – Das Heiligtum der Wölfe", id: "1BCCAcSHppJ1tOXn53xs-CFs3Nc36qSX_" },
+{ title: "Folge 07 – Der Hundert-Jahre-Mond", id: "1D2oSzoAw3sdqGy5oFnp3GBUy17yo5uZa" },
+{ title: "Folge 08 – Das große Rennen", id: "1_ZWIpTsIMPlsPrs4OB4t4ZlYATEw__l3" },
+{ title: "Folge 09 – Gorillas außer Rand und Band", id: "11Jwvbs6fFCckmRxOALbWQquHT9X__PwO" },
+{ title: "Folge 10 – Das Renn-Chaos", id: "1PEZ7ISBiMGkwWiDDsfUfC80FfaT06e_p" },
+{ title: "Folge 11 – Hilfe von Shadow Wind", id: "1AbXXTBGUJSSMJ9YItqbqM1b2BlA4visz" },
+{ title: "Folge 12 – Ungleichgewicht in Chima", id: "1TP_12HqgYaqAk9DRY37ZFkuz1S7kn4jv" },
+{ title: "Folge 13 – Ausgetrickst", id: "12_oBh0OJ3dlhFNamh6e32kNXqkqSnQHl" },
+{ title: "Folge 14 – falsche CHI", id: "1I3iWF-TPHGyM95WfjaZ1S_WI_JEvqQVi" },
+{ title: "Folge 15 – Diebische Raben ", id: "1q3kDG8uyO6Q0eu4y2ivfrM8RYeTTRKXp" },
+{ title: "Folge 16 – Friedensverhandlung", id: "19J603GGnmWRnQckzdeibwtUUroc1VAWL" },
+{ title: "Folge 17 – Verstoß gegen die Regeln", id: "1xMitNxh3W1bMrHTg89yf0wQU5wYfBVKh" },
+{ title: "Folge 18 – Die schwarze Wolke", id: "11syFKnkzEd1puck0mbWgRnPv0oGxH-2F" },
+{ title: "Folge 19 – Der Lebensberg von Chima", id: "1nOnIeJFBrSthW35m34VK0og0Wm_DKSBt" },
+{ title: "Folge 20 – Für Chima!", id: "1jktP4twrXKNzDDys263RlV-LpJ1tKMEY" }
+      ],
+
+2: [
+{ title: "Folge 01 – Ausflug ins Hinterland", id: "1AGRw2SEcb1YJz-Bo9MHRl_v1pAt_IfmF" },
+{ title: "Folge 02 – Gefangen im Netz", id: "1DyNrFcw4ZCw03GQuhXEeS_xAOV5sJCPM" },
+{ title: "Folge 03 – Das Geheimnis um Shadow Wind", id: "16pXKkcG529dHJxM1P5rvoVNcRWh2aKXd" },
+{ title: "Folge 04 – Schlafwandelnde Bären", id: "1k6ahtEJDt13fZjhpZ6ZyZheumvMMbjey" },
+{ title: "Folge 05 – Lavals Geheimnis", id: "1uLNIguPtumN1Dr2_O_Zv3V0h9AoOk2u7" },
+{ title: "Folge 06 – Die Befreiung des Legendären Löwen", id: "1x29-bzuP25-pPAqwr-6j-DBHPiDIJFlt" }
+],
+
+3: [
+{ title: "Folge 01 – Feuerflügel", id: "19wOQ8Lw4-OX94-Z80sULGAkxCQPGdF5O" },
+{ title: "Folge 02 – Die Jäger der Eiszeit", id: "1XAFXi2LJslEBCiGx8P0Qujt9Om1UP3be" },
+{ title: "Folge 03 – Die Rückkehr der legendären Tiere", id: "1IOrXtzZ3c4JWmtRZnKNCenD0Xrpfsyl1" },
+{ title: "Folge 04 – Die Feuerprobe", id: "1aZ8BQkuvQXfgqjrVGykyWpCunRmGaqrw" },
+{ title: "Folge 05 – Der magische Hügel", id: "1Mk4NJuSa6G7324CculgwM8XPa0CAM87R" },
+{ title: "Folge 06 – Babysitter für Flinx", id: "1UH0lrFaG4K-Z5d-J6K5zNgVD0UiuJC2_" },
+{ title: "Folge 07 – Der kleine Feuer-Vogel", id: "1bHN-ccsU17qNH2xNa1x56NbOjy-PU6A7" },
+{ title: "Folge 08 – Die Tunnelkatze", id: "19EKcmnD4xdz7_YPzIQg2BmdX0RyIN0S3" },
+{ title: "Folge 09 – Königliche Angelegenheit", id: "1ox4GFff5kO5RM-2Rj8jHV3kxaVvUfl1N" },
+{ title: "Folge 10 – Die Gletscher-Falle", id: "1z5lnNbwhp3wkeJR7dBYEfD3s_6F2ji1z" },
+{ title: "Folge 11 – Die legendäre Chima-Karte", id: "1yMx-i1h6vDN98SlAgaBGgljX_bxevgVF" },
+{ title: "Folge 12 – Die eisige Schlucht", id: "1uqvPlCzioZBrcaBdUEBpNE-K8w18zjJi" },
+{ title: "Folge 13 – Ein Funken Hoffnung", id: "1jr51vYagHug0K6EAznS46ZuxM_z9-3Js" },
+{ title: "Folge 14 – Die Feuerflügel", id: "1Hs4Hb_k83S9q5FdhEdcZfFnJE5omYDQD" },
+{ title: "Folge 15 – Das Feuerflügellicht", id: "1dS1E3BwPMA5irKNu8nZtQWKyvTR5WA5G" },
+
+
+
+
+
+
+
+]
+
+    }
+  }
 };
+
+
+ 
+
+
+
+
 
 
 
@@ -351,8 +541,5 @@ renderLastSeen();
 </script>
 </body>
 </html>
-
-
-
 
 
