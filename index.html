@@ -69,6 +69,53 @@ h4{margin:16px 0 8px 0;color:var(--accent);text-transform:uppercase;letter-spaci
 </style>
 </head>
 <body>
+<div id="loginScreen" style="
+  position:fixed;
+  inset:0;
+  background:#0b0b0f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
+">
+  <div style="
+    background:#1a1a2e;
+    padding:30px;
+    border-radius:20px;
+    border:2px solid #00ffcc;
+    width:320px;
+    text-align:center;
+  ">
+    <h2 style="color:#00ffcc;margin-bottom:10px;">Lets Archive</h2>
+    <p style="font-size:12px;color:#777;margin-bottom:20px;">
+      Bitte einloggen
+    </p>
+
+    <input id="loginEmail" type="email" placeholder="E-Mail"
+      style="width:100%;padding:12px;border-radius:14px;border:none;margin-bottom:12px;background:#222;color:#fff;">
+
+    <button onclick="login()" style="
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:none;
+      background:#00ffcc;
+      color:#000;
+      cursor:pointer;
+      font-weight:bold;
+    ">
+      Login
+    </button>
+
+    <p id="loginError" style="color:#ff5555;font-size:12px;margin-top:10px;display:none;">
+      Diese E-Mail ist nicht erlaubt
+    </p>
+  </div>
+</div>
+
+<button onclick="logout()">Logout</button>
+
+
 
 <header>
   <h1>Willkommen bei Lets Archive</h1>
@@ -95,6 +142,18 @@ h4{margin:16px 0 8px 0;color:var(--accent);text-transform:uppercase;letter-spaci
   <button onclick="nextEpisode()">Nächste Folge ▶</button>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 const data = {
   serie1: {
@@ -108,6 +167,8 @@ const data = {
       ]
     }
   },
+
+
 
  serie2: { name: "Ninjago", staffeln: {
     1: [{ title: "Pilot", id: "1t7C34GGPcP65P3ThGmXj4pklUc_5ondX" },
@@ -188,7 +249,8 @@ const data = {
 {title:"Folge 08 - Der alte Leuchtturm",id:"1SjZzdrvVUyySOH2Ls9pKSKaZbVmfPgM-"},
 {title:"Folge 09 - Das Ninja-Ersatzteam",id:"1VDOAWSLT13v4yUei6J9M5nKaN6HchRfJ"},
 {title:"Folge 10 - Der allmächtige Nadakhan",id:"1yMTLoRZpiCVpipQBOunGM5FcmFKVUhRv"},
-{title:"Tag der Erinnerungen",id:"1KcViHfXi1PFw5KNA0dMbOxIwrC3_DzoC"}
+{title:"Tag der Erinnerungen",id:"1KcViHfXi1PFw5KNA0dMbOxIwrC3_DzoC"},
+{title:"Tales of the Crew",id:"16i-_YNI4ujCM5Q6QlNd-dsBdNIpXgFmY"}
 ],
 
 7: [
@@ -201,8 +263,11 @@ const data = {
 {title:"Folge 07 - Jede Menge Geheimnisse",id:"1JvNCJeei7jALYs_8C277cihEyZieKCt7"},
 {title:"Folge 08 - Das Familientreffen",id:"1T-iNH7hhKekR7LFW5rJ3YRZXN9aSoYiC"},
 {title:"Folge 09 - Zwei wie Feuer und Wasser",id:"1NdwLocz-9uMHtXIWo6YD1aAvRuJjX5ha"},
-{title:"Folge 10 - Reise in die Vergangenheit",id:"1rszBFkrdOIpvQ2ryfWA46IhTCcNAZ1sj"}
+{title:"Folge 10 - Reise in die Vergangenheit",id:"1rszBFkrdOIpvQ2ryfWA46IhTCcNAZ1sj"},
+{title:"LEGO NINJAGO MOVIE",id:"1U3t8iTk3RkAwHy1sJA1-rE6e4yx8Z_2z"}
 ],
+
+
 
 8: [
 {title:"Folge 01 - Die Maske der Täuschung",id:"11JQupRH9Ga6sipN-m-TV5Zl8g7sUnVbb"},
@@ -247,18 +312,83 @@ const data = {
   serie3: {
     name: "Monkie Kid",
     staffeln: {
-      1: [
-        { title: "Episode 01 – A Hero is Born + Bad Weather", id: "1lLHhcnIGbMsMHuZbwVyaK5uZ9H0ADdjx" },
-        { title: "Episode 02 – Duplicatnation", id: "1Pn0ROqQaabH4eckhygVEavpX9SdO5uK" },
-        { title: "Episode 03 – Coming Home", id: "1oO8CdGUUdzqzflOvvPhwxeNP_DFjUx98" },
-        { title: "Episode 04 – Noodles or Death", id: "1Xy_QoT0f7MH2QJnMIqxPlDEqG89iZhBS" },
-        { title: "Episode 05 – Calabash", id: "1pTjIccyUPfiEfPdoFBFZ471mqO4DAULy" },
-        { title: "Episode 06 – The Great Wall Race", id: "1gQpYeA7Y9SwSMUHJ3JMYgJA62xZ8YFbG" },
-        { title: "Episode 07 – Impossible Delivery", id: "1MTHO4SX9xeXgLgrphy0KkDthkXO7X7MZ" },
-        { title: "Episode 08 – Skeleton Key", id: "19ZGo71sl9-uoirUDcCIsgoJvGG70o0rh" },
-        { title: "Episode 09 – Macaque", id: "1_KkJrGAU9giDgX2kADtJetjvuc6N2Z3G" },
-        { title: "Episode 10 – The End is Here!", id: "1zK4a2BqRtnUbydlClKu33WWjown0a2ZB" }
-      ]
+      1:[
+        { title: "Episode 01 – Ein Held ist geboren + Schlechtes Wetter", id: "1lLHhcnIGbMsMHuZbwVyaK5uZ9H0ADdjx" },
+        { title: "Episode 02 – Klon-Land", id: "1Pn0ROqQaabH4eckhygVEavpX9SdO5uK" },
+        { title: "Episode 03 – Zuhause", id: "1oO8CdGUUdzqzflOvvPhwxeNP_DFjUx98" },
+        { title: "Episode 04 – Nudeln oder Tod", id: "1Xy_QoT0f7MH2QJnMIqxPlDEqG89iZhBS" },
+        { title: "Episode 05 – Kalebasse", id: "1pTjIccyUPfiEfPdoFBFZ471mqO4DAULy" },
+        { title: "Episode 06 – Das Große Rennen", id: "1gQpYeA7Y9SwSMUHJ3JMYgJA62xZ8YFbG" },
+        { title: "Episode 07 – Unmögliche Zustellung", id: "1MTHO4SX9xeXgLgrphy0KkDthkXO7X7MZ" },
+        { title: "Episode 08 – Skelett-Schlüssel", id: "19ZGo71sl9-uoirUDcCIsgoJvGG70o0rh" },
+        { title: "Episode 09 – Makack", id: "1_KkJrGAU9giDgX2kADtJetjvuc6N2Z3G" },
+        { title: "Episode 10 – Das Ende ist nah", id: "1zK4a2BqRtnUbydlClKu33WWjown0a2ZB" }
+      ],
+
+2: [
+{ title: "Special 02 – Revenge of the Spider Queen (English)", id: "18un9XTtzF02p9S3KXDNPBEJCbByy78WI" },
+{ title: "Episode 01 – Der Schlaf-Virus", id: "1xj5zdK7C_31jOLfRZqz3vEyoHtaSqYxR" },
+{ title: "Episode 02 – Zerstörerische Teigtasche", id: "1l69Z4gt0QAMeaHF6xw5XMfPLQYYfNrGr" },
+{ title: "Episode 03 – Pig Pong Panik", id: "16_rK4BVZyfpyEttviG91veEmFaW8QCkL" },
+{ title: "Episode 04 – Süß-Sauer", id: "1hPEYiYYf05XLMDPC0P8-f5Bvw27_LCf2" },
+{ title: "Episode 05 – Kleines Maß", id: "1ExqFJ8CvApdhp0wHCYZTx-dQvhMle2eA" },
+{ title: "Episode 06 – Spielstart", id: "1FTrBEJ0RF5BchTkBbG85vpRolhVImaTu" },
+{ title: "Episode 07 – Schattenspiel", id: "1mrpOKlEH_tkKNEaEq3IunaKklI6OkyXL" },
+{ title: "Episode 08 – Ein Tässchen Tee", id: "1BWrHw0u1ne440MrFAPEJxNVmfZTXt3Lg" },
+{ title: "Episode 09 – 72 Transformationen", id: "1ow-BtymhFBwS84bWZXw4zsQZP0eDGX_1" },
+{ title: "Episode 10 – Das ist das Ende", id: "10Wl3AAdAL3dFcLiAlRpvtTlFA0xfJyth" }
+],
+
+3: [
+{ title: "Episode 01 – Auf der Flucht", id: "1YtrJujbfyGIHT5ytAUibHtb0oMWCL5dp" },
+{ title: "Episode 02 – Das Unterwasserabenteuer", id: "1hbGY83DEnZrglvVP4OvCOeYlzSKJnheD" },
+{ title: "Episode 03 – Kluges Kind", id: "1vqVYWbR4fPCp6oY9uveIzpxHmmpeZ2jm" },
+{ title: "Episode 04 – Die Seite des Gewinners", id: "10-xjdm1MspsejAmD63ilAFfWolaONxIK" },
+{ title: "Episode 05 – Amnesie Regeln", id: "11pu5vgXlKQmyVPrHXkzToCf_9YKLXEhB" },
+{ title: "Episode 06 – Der erste Ring", id: "12nki-6OCM_IdfDbzKB_jnedR9tN5dwsU" },
+{ title: "Episode 07 – Die Kochshow", id: "1hfG1RR6qZFYPZKAPJINOO5KuXjYCoVQ_" },
+{ title: "Episode 08 – Ausgeschlossen", id: "1hlqTYwFDPZoHL5B2qvpOym7oFxy4p-ZM" },
+{ title: "Episode 09 – Der König, Der Prinz und der Schatten", id: "1WDVn7mtFgMKuRTG7IopdxdIRDYLkSQac" },
+{ title: "Episode 10 – Das neu entfachte Feuer", id: "14OLyzeQ_XKXqPJAjbftZWkLaOnRN5otX" },
+{ title: "Special 03 – This Imperfect World (English)", id: "1suiTnYw1Az_YGAHwp29XO1WG9h_H-l8N" }
+],
+
+4: [
+{ title: "Episode 01 – Familiar Tales (English)", id: "1NLZd6t9dEh_fPa_HBNLjmpD2YKj6-Ido" },
+{ title: "Episode 02 – New Adventures (English)", id: "1J53TxDfL4SLQQ6j2eWdga2dps-DYwJcj" },
+{ title: "Episode 03 – The Great Tang Man (English)", id: "1n2W4HHeWupwgN62bMSXhtaM5toAl_Zit" },
+{ title: "Episode 04 – Pig-Napped! (English)", id: "19MiknVMK4EL5xx-ROgjDnfYpBRU491OH" },
+{ title: "Episode 05 – Court of the Yellow Robed Demon (English)", id: "1hZl7-LxikH5vLcvyP0cQDsG0PiBIiTTb" },
+{ title: "Episode 06 – Show Me the Monster (English)", id: "1hs7SOPYgB24DZQQstfdOTjvuqmCL1KL0" },
+{ title: "Episode 07 – Pitful Creatures (English)", id: "13IneG9rLDSnH9LMCVPM1GIWSUIQKPrZt" },
+{ title: "Episode 08 – The Brotherhood (English)", id: "10EssIXuE5Fjpk0MD2Dd3aQwoihZbK50D" },
+{ title: "Episode 09 – Roast of the Monkie Kids (English)", id: "1Bonp-IUfCIaPGxoGfDz4GFJUOmquhyic" },
+{ title: "Episode 10 – The Jade Emperor (English)", id: "1vqKBfKqdZlRm9VNjHEizRXMkILN3t0zl" },
+{ title: "Special 04 – The Emperor's Wrath (English)", id: "14ucvREGgEUNd0s_4isR4sRK8KrJuZ6PM" }
+],
+
+5: [
+{ title: "Episode 01 – Stings That Bind (English)", id: "1gxW0_57jhMefj_SuK3KzkPpjYD47dzCR" },
+{ title: "Episode 02 – Collar the King (English)", id: "1Y9RFblL_rHWT9Pu4PndRZctGd1oBP_Ij" },
+{ title: "Episode 03 – Temple of the Goddess (English)", id: "11VQQwJdlOYYQtpeoT9K3qi2Jg_FCZ2pr" },
+{ title: "Episode 04 – The Storm Within (English)", id: "1xSRApVZwZ6FDY8X3jDJQioRH-_Q4xeKe" },
+{ title: "Episode 05 – Claim to Flame (English)", id: "1m7C3gO0aB-14vEG2kDENfDrmzI61W49s" },
+{ title: "Episode 06 – Festival Flugitives (English)", id: "1UPdPbnwU4H3w9EExauhBlQVjeWVWdcnV" },
+{ title: "Episode 07 – Into the Pagoda (English)", id: "1ARTVI7pAmVYDHU2QmTplw-UA0qBELJzq" },
+{ title: "Episode 08 – The Cage (English)", id: "14dvBu7MQTDDzDItg9n_ul3uLkoX1Myn9" },
+{ title: "Episode 09 – Sacrifice (English)", id: "1ZHmWL5hko2QqyrlxDYuVduFNhsxLpdZw" },
+{ title: "Episode 10 – Harbringer (English)", id: "1JHtN4V9Ryyy_NvY_zYO-fM8I6kAjs2S9" }
+],
+
+
+
+
+
+
+
+
+
+
     }
   },
 
@@ -342,8 +472,72 @@ const data = {
 
 ]
 
+
     }
-  }
+  },
+
+serie6: {
+name: "Jade Armor",
+staffeln: {
+1:[
+ { title: "Folge 01 - Das Geschenk", id: "1jV0STZ9ZmmRmBJqy0_X1XC2k-r729oro" },
+{ title: "Folge 02 - Das Chaos", id: "1iZ8YW1PHyIsvOnLzWcZUi0Tks7TS6f1F" },
+{ title: "Folge 03 - Das Gespräch", id: "1qIY_DtR9GVl94DFOGqf7hR91U6o2KiBg" },
+{ title: "Folge 04 - Die böse Doppelgängerin", id: "1No53sSjIfYa1WzZjlX-LgfGvXTHPBKbM" },
+{ title: "Folge 05 - Wildes Ban Tang", id: "1VPNpz4TbDHmk8jBc7OWbX4eWPVFpgyRn" },
+{ title: "Folge 06 - Die Würfel sind gefallen", id: "1uwtFvm3VylUnaeBdPfe1Q0I5svgwXO38" },
+{ title: "Folge 07 - Marionetten", id: "1rwm8tXlxJvd1wxESr0AnU4pUmvXS5TQE" },
+{ title: "Folge 08 - Vergeben und Vergessen", id: "1AgyjARDnRsAt2Z5Cr7L6-4s7-nIDHhS1" },
+{ title: "Folge 09 - Sag kein Wort!", id: "1KYReWCH7L5Y8VuKHDtuQ3BDFPrefxUC0" },
+{ title: "Folge 10 - Xinyan der Große", id: "1SodGPRwy6N7Tlr-onv1F0h8XIu5J9f8h" },
+{ title: "Folge 11 - Kais dunkle Seite", id: "1XlyCP_L-iB7EGENnbc2w-6fnbo3fUkz" },
+{ title: "Folge 12 - Das Körpertausch-Chaos", id: "1k-EhitQMtcpqltw-fcGU0NPtQfqVVIeR" },
+{ title: "Folge 13 - Das funfte Beasticon?", id: "1u20TGeB9LkoK3KBkrGFU_HFqiV3JN2Hu" },
+{ title: "Folge 14 - Der Fantasie-Schlüssel", id: "1xlOJ61h9kMTz3_OXM3b-rATx_tyUvAf9" },
+{ title: "Folge 15 - Das Parfüm", id: "1Ot5gnVGgAMGlxfvDIO5L_QHuqTFzrKS3" },
+{ title: "Folge 16 - Alle lieben Jade", id: "1hRZrR4zag4IpDgc-OQ0oKbCevEvXLWd8" },
+{ title: "Folge 17 - Der Beastibot", id: "18-aI4coxFS9pYvBt6wP_UtlOUHzbGaF3" },
+{ title: "Folge 18 - Der Granatapfel", id: "1jhRHDJ1S6fwq9Eg7sd0KhqGPblW1ZpA5" },
+{ title: "Folge 19 - Der Grüne Blitz", id: "1xMen0IVosgs7Plte9s675aRbh9vSXefH" },
+{ title: "Folge 20 - Der Faden", id: "1Lcls_BY9bgMXJ933Ve3nTK2LqNHhP9WN" },
+{ title: "Folge 21 - Der Filter", id: "1-4gdke32uWi7ytCwjsAGcLPSygsPzp9-" },
+{ title: "Folge 22 - Filmchaos in Ban Tang", id: "1l7VfXD7c5RiMlFXKBe66c_EGTT-cGQxd" },
+{ title: "Folge 23 - Durch die rosarote Brille", id: "15G2Hamhn71M8M6uPYZmJ7sH5eQT6ScGn" },
+{ title: "Folge 24 - Die Zauberkugel", id: "1jnnbS0Q6DAkqfqegoL-BXoaviMUav-Gn" },
+{ title: "Folge 25 - Die Mondfinsternis", id: "1TsEIBykKzGt1MaoeH4Tcz9QYyx7vEAuA" },
+{ title: "Folge 26 - Für immer Jade", id: "1qQlyuxmGQ7kyva1ECPaSH6ES-WiAvfKf" },
+],
+
+2:[
+{ title: "Folge 01 - Alles auf Anfang", id: "1vz3jZj_l7tPEP8JC_vxlwcMMvOXnYB7E" },
+{ title: "Folge 02 - Eine klebrige Angelegenheit", id: "1HHgpPz4ml1KoGy4wgP1Lm3MSqL2Xx1D-" },
+{ title: "Folge 03 - Postkarte mit Folgen", id: "1V-NouDlRHqkJLOBPxOKrgZTpKKRRXKKD" },
+{ title: "Folge 04 - Armor of Darkness", id: "1Tg5l1eXrr2DnWq5RktDQjEr5inCsWHAP" },
+{ title: "Folge 05 - Die Langlebigkeitsnudeln", id: "1scVFq8F7RVWejtPB90OGTBbxb1-tWJoe" },
+{ title: "Folge 06 - Splitter-Drama", id: "1yp3LW9g2hL5tQ7O1JkgvBEjy4JDLjQzq" },
+{ title: "Folge 07 - Ein gigantischer Kampf", id: "1WaBmIhLPph5FZzMbJwB5dzAkJ4T2u8g7" },
+{ title: "Folge 08 - Zu viele Jades", id: "1kGPi9J7DHG1e07JurRMcYecAFCXOcKw9" },
+{ title: "Folge 09 - Die Diagnose", id: "1yyUgidO2JEmcPbULrlNdd_o0wZkM2flp" },
+{ title: "Folge 10 - Mein Freund, die Bestie", id: "1IZfdKVeMBXroS_4twnje6npiiFTgZKFs" },
+{ title: "Folge 11 - Die Auktion", id: "1nWtCoO8McD6CFehqEoAeLhc6pvLQ-WfO" },
+{ title: "Folge 12 - Eine clevere Füchsin", id: "15mcCv8MS6_L3rSjDMjhKAD0A-auFThqe" },
+{ title: "Folge 13 - Jade-Alarm", id: "1PvCQ1WDgGQ6g2Z0SxfZuA8gRTjvY96bo" },
+]
+
+
+}},
+
+serie7: {
+    name: "KPop Demon Hunters",
+    staffeln: {
+      1: [
+        { title: "KPoP Demon Hunters", id: "1D0GjZIRlm59AuJeQG0vFJM1qgA9hJX_C" }
+      ]
+    }
+  },
+
+
+
 };
 
 
@@ -538,7 +732,69 @@ document.addEventListener('touchend',e=>{
 
 renderSeries();
 renderLastSeen();
+// ===== LOGIN SYSTEM v0.2.3 (FIX) =====
+const allowedEmails = [
+  "admin@mail.de",
+  "user@mail.de",
+"freeaccess",
+"lets@archive.de",
+"lets@archive.com",
+"lets@archive.at",
+"LetsArchive.de",
+"LetsArchive.com",
+"LetsArchive.at",
+"airdream09.github.io/LetsArchive",
+"jonassmalle@gmail.com"
+];
+
+let ACTIVE_PROFILE_KEY = null;
+
+function login(){
+  const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+  const error = document.getElementById("loginError");
+
+  if(!allowedEmails.includes(email)){
+    error.style.display = "block";
+    return;
+  }
+
+  error.style.display = "none";
+  localStorage.setItem("letsarchive_active_profile", email);
+  ACTIVE_PROFILE_KEY = "letsarchive_profile_" + email;
+
+  if(!localStorage.getItem(ACTIVE_PROFILE_KEY)){
+    localStorage.setItem(ACTIVE_PROFILE_KEY, JSON.stringify({
+      progress:{},
+      lastSeen:[]
+    }));
+  }
+
+  document.getElementById("loginScreen").style.display = "none";
+}
+
+function checkLogin(){
+  const email = localStorage.getItem("letsarchive_active_profile");
+  if(!email){
+    document.getElementById("loginScreen").style.display = "flex";
+    return;
+  }
+
+  ACTIVE_PROFILE_KEY = "letsarchive_profile_" + email;
+  document.getElementById("loginScreen").style.display = "none";
+}
+
+function logout(){
+  localStorage.removeItem("letsarchive_active_profile");
+  location.reload();
+}
+
+checkLogin();
 </script>
+
+
+
+
+
+
 </body>
 </html>
-
