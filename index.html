@@ -503,7 +503,7 @@ const data = {
 ],
 
 
-Entschlüsselt: [
+Entschlüsselt : [
 { title: "Folge 01 - Die Geschichte der Ninja", id: "1XQG1md5Z_evVrdBUSj_kzVo3oNBV-_u-" },
 { title: "Folge 02 - Das Fahrzeug-Puzzle", id: "1CyA1J54u3-itXk0m8kxHByzOY-01_IbP" },
 { title: "Folge 03 - Legendäre Orte", id: "1o0mSMTEYuex8-mkQAc-_tTw-UiuDAjnu" },
@@ -515,6 +515,30 @@ Entschlüsselt: [
 { title: "Folge 09 - Die Prophezeiung des Grünen Ninja", id: "193Rq7en60Ut6lRaOPcbizHmIyzsqkD2l" },
 { title: "Folge 10 - Die Größten Siege", id: "1qp0qorxnk6UclQvmWSlwkFK1oVbhwGUy" },
 
+
+],
+
+WusTee : [
+{ title: "Folge 01 - Geheime Teesorten", id: "1ElfyF39aWuf5LYGoHkf2NCv85kkBLx7S" },
+{ title: "Folge 02 - Drehendes Schild", id: "12uTC0W5IIcaaAKyyxldZzExGF906OcnK" },
+{ title: "Folge 03 - Musik Nacht Teil 1", id: "1k9ryAWP3Sf6UuFB5N560mjg6qnJZx2E5" },
+{ title: "Folge 04 - Musik Nacht Teil 2", id: "1lrp0WvZ92Gu1hA_XCSTrUbkdibWfuH4B" },
+{ title: "Folge 05 - Namen", id: "1lfNSRduwP2NuRQel_4DA030iOCcOiXZ0" },
+{ title: "Folge 06 - Lustige Kerle", id: "1-6RmxEEsVfIx_HEqtrqAnio19t4EvHkt" },
+{ title: "Folge 07 - Kontrolltag", id: "19kkN9FYhiRnGBTMQA1uvmcP7mCGV6iRw" },
+{ title: "Folge 08 - Panda-monium", id: "1B8p9sg_AgZzGi_-nIWBUjNmYNuET6jEs" },
+{ title: "Folge 09 - Ferngesteuerter Zane", id: "1e5uNiMP0oSyFH8ezEQmwK3oipjyAGLZj" },
+{ title: "Folge 10 - Trojanische Teekessel", id: "1k-kXm17r-dketRXGPMI-AEDvWR4X80Ei" },
+{ title: "Folge 11 - Mysteriöser Staub", id: "18Zut44Ty_6lbCE0mc_3KOr8Vw6PSaGjr" },
+{ title: "Folge 12 - Besonnener Kai", id: "1Tk4OxOhZZcs015jAC_IziFIS9vqkvHBH" },
+{ title: "Folge 13 - Geheimagent Zane", id: "1fbG6NEyn73UFYwtNTnBwqnbYA2oxvs9B" },
+{ title: "Folge 14 - Verspäteter Lloyd", id: "1S_Po6idCIrAB_VhrYoI1BEOxTWmOkNIE" },
+{ title: "Folge 15 - Strenge Kontrolle", id: "1N5fITPgkmrPNQL5sDvxHjwDJ0NPTbish" },
+{ title: "Folge 16 - Der Münzwurf", id: "19ObxKFWstTtPcG0qI8EZXOuF1hHCDYOW" },
+{ title: "Folge 17 - Nyas Gemälde", id: "16E-aDLfjLmdU3L96spbWAARoLt2OJ0IY" },
+{ title: "Folge 18 - Zanes Schachspiel", id: "1Oz9t0GgeLV9FDMPGg2VBaOAVpw_1GbqB" },
+{ title: "Folge 19 - Der Geschmackstest", id: "15WnouTJ0Jl2iiqvETiqYdEciN93GUiAt" },
+{ title: "Folge 20 - Eine wunderbare Freundschaft", id: "1f-Pa3MgSOtAhDs3q1SybOU2N14Ig8EkZ" },
 
 ],
 } 
@@ -1050,6 +1074,7 @@ serie11: {
     }
   },
 
+
 serie12: {
     name: "NICHT NACHMACHEN!!!",
     staffeln: {
@@ -1181,6 +1206,61 @@ function renderEpisodes(){
   // Automatisch letzte Folge auswählen
   autoSelectLastEpisode();
 }
+
+
+
+
+
+// ==== RENDER EPISODES MIT HÄKCHEN ====
+function renderEpisodes(){
+  const container = document.getElementById("seasonContainer");
+  container.innerHTML = "";
+  const seasons = data[currentSeries].staffeln;
+
+  Object.keys(seasons).forEach(season=>{
+    const seasonCard = document.createElement("div");
+    seasonCard.className="season-card card";
+    seasonCard.innerHTML = `<h3>Staffel ${season}</h3>`;
+    container.appendChild(seasonCard);
+
+    const epsList = document.createElement("div");
+    epsList.className="episode-list";
+
+    seasons[season].forEach((ep,i)=>{
+      const epDiv = document.createElement("div");
+      epDiv.className="episode-card";
+      epDiv.style.position = "relative"; // für Häkchen-Icon
+
+      // Text
+      epDiv.innerText = ep.title;
+
+      // Häkchen hinzufügen, falls gesehen
+      if(progress[ep.id]){
+        const check = document.createElement("span");
+        check.innerHTML = "✔"; // Häkchen
+        check.style.position = "absolute";
+        check.style.right = "10px";
+        check.style.top = "50%";
+        check.style.transform = "translateY(-50%)";
+        check.style.color = "#00ff66";
+        check.style.fontWeight = "bold";
+        epDiv.appendChild(check);
+      }
+
+      epDiv.onclick = ()=>{
+        currentSeason = parseInt(season);
+        currentEpisodeIndex = i;
+        playEpisode(ep.id);
+      };
+      epsList.appendChild(epDiv);
+    });
+
+    container.appendChild(epsList);
+  });
+}
+
+
+
 
 // ====== PLAYER ======
 function playEpisode(id){
